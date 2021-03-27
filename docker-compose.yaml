@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    hostname: '0.0.0.0'
+    restart: always
+    ports:
+      - '3000:80'
+    depends_on:
+      - client
+      - api
+
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./api
+    hostname: '0.0.0.0'
+    restart: always
+    ports:
+      - '5555:3000'
+    volumes:
+      - ./api/node_modules:/app/node_modules
+      - ./api:/app
+    command:
+      yarn dev
+
+  client:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
+    hostname: '0.0.0.0'
+    restart: always
+    stdin_open: true
+    volumes:
+      - ./client/node_modules:/app/node_modules
+      - ./client:/app
+    ports:
+      - '7777:3000'
+    command: yarn dev
