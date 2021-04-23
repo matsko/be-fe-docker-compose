@@ -1,4 +1,4 @@
-Thomas Docker Project
+BE / FE Docker Project
 ===
 
 # Installation
